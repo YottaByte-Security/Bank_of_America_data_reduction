@@ -23,6 +23,9 @@ def reduce(row):
 # must be truly unique to the rest of the statement.  Keys such as "UNITED" may mean United Airlines, or it could match
 # United Parcel Service, United Health Group, United Rentals, etc.  *** Be very careful ***
 
+# Make sure commas, parenthesis and quote marks are placed correctly.  Mistakes may not be caught by the interpreter and
+# will result in unintended results.
+
     additional_processing = [("THE UPS STORE #", "THE UPS STORE"),
                              ("TRAVELINGMAILBOX.COM 855-749-1737 NC", "Traveling Mailbox"),
                              ("SUNOCO", "SUNOCO"),
