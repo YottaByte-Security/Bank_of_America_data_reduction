@@ -18,6 +18,55 @@
 def reduce(row):
 # CHECKCARD, PURCHASE, WITHDRAWL, and Deposit all have the same fields in the description.
 
+# After the innitial processing is done, additional processisng can be done by substitution.  The following list
+# is comprised of ("key", "substitution) pairs.  Caution must be used when adding keys/substitution pairs.  The key
+# must be truly unique to the rest of the statement.  Keys such as "UNITED" may mean United Airlines, or it could match
+# United Parcel Service, United Health Group, United Rentals, etc.  *** Be very careful ***
+
+    additional_processing = [("THE UPS STORE #", "THE UPS STORE"),
+                             ("TRAVELINGMAILBOX.COM 855-749-1737 NC", "Traveling Mailbox"),
+                             ("SUNOCO", "SUNOCO"),
+                             ("STUNTSOFTWARE.COM 9715333677", "STUNT SOFTWARE"),
+                             ("STATE FARM INSURANCE", "STATE FARM INSURANCE"),
+                             ("SQ *WDR LIMO SERVICE GO", "WDR LIMO SERVICE"),
+                             ("SQ *SAVERINO'S ITAL", "SAVERINO'S"),
+                             ("SQ *JOHNNY'S BURGER","JOHNNY'S BURGERS"),
+                             ("SHELL OIL", "SHELL OIL"),
+                             ("PROTONMAIL", "PROTONMAIL"),
+                             ("PRIME FRESH MEMBERSHIP AMZN.COM/PRMEWA", "AMAZON"),
+                             ("PHILLIPS 66 -", "PHILLIPS 66"),
+                             ("PILOT", "PILOT"),
+                             ("MCDONALD'S", "MCDONALD'S"),
+                             ("LOVE S TRAVEL", "LOVES"),
+                             ("LOVES COUNTRY", "LOVES"),
+                             ("LOVE S COUNTRY", "LOVES"),
+                             ("LOWES", "LOWES"),
+                             ("IHOP", "IHOP"),
+                             ("HOLIDAY INN EXPRESS", "HOLIDAY INN"),
+                             ("HERTZ RENT-A-CAR", "HERTZ"),
+                             ("HAMPTON INN", "HAMPTON INN"),
+                             ("GOOGLE", "GOOGLE"),
+                             ("FRESHLY.COM 844-373-7459 NY", "FRESHLY"),
+                             ("FAIRFIELD INN", "FAIRFIELD INN"),
+                             ("EXXONMOBIL", "EXXONMOBILE"),
+                             ("DOMINO'S", "DOMINO'S"),
+                             ("DENNY'S", "DENNY'S"),
+                             ("DENNY'S #", "DENNY'S"),
+                             ("CVS/PHARM", "CVS PHARMACY"),
+                             ("CRACKER BARREL #", "CRACKER BARREL"),
+                             ("CONOCO", "CONOCO"),
+                             ("CLARKS NUTRITION", "CLARKS NUTRITION"),
+                             ("CHEVRON", "CHEVRON"),
+                             ("BRIGHT HOUSE NETWORKS", "BRIGHTHOUSE"),
+                             ("BRIGHTHOUSE NETWORKS", "BRIGHTHOUSE"),
+                             ("BEST WESTERN", "BEST WESTERN"),
+                             ("AT&T", "AT&T"),
+                             ("ARCO #", "ARCO"),
+                             ("APPLEBEES", "APPLEBEES"),
+                             ("AMERICAN AIR", "AMERICAN AIRLINES"),
+                             ("AMAZON", "AMAZON"),
+                             ("AABACO SMALL BUSINESS 866-438-1582", "AABACO SMALL BUSINESS")]
+
     nd = "" # holds the new description
     if "CHECKCARD" in row['description']:
         a = row['description'].split(" ")
@@ -44,6 +93,10 @@ def reduce(row):
     elif "HERN CNTY UTILIT DES" in row['description']:
         row['description'] = "HERNANDO COUNTY UTILITIES"
 
+    for i in additional_processing:
+        if i[0] in row['description']:
+#            print ("substituting", i[1], " for ", row['description'])
+            row['description'] = i[1]
     return row
 
 def subtotal (stmt):
@@ -98,7 +151,7 @@ if __name__ == "__main__":
 
     subtotals = subtotal(stmt)                                  # Subtotal the new, data reduced statement
 
-# Print results to standard out in pipe delimited format
+# # Print results to standard out in pipe delimited format
 
     for i, j in sorted(subtotals.items()):
         print i,"|",j
